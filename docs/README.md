@@ -1,43 +1,29 @@
-# 🏗️ Desafio Fullstack Integrado
-🚨 Instrução Importante (LEIA ANTES DE COMEÇAR)
-❌ NÃO faça fork deste repositório.
+# Documentacao do Desafio
 
-Este repositório é fornecido como modelo/base. Para realizar o desafio, você deve:
-✅ Opção correta (obrigatória)
-  Clique em “Use this template” (se este repositório estiver marcado como Template)
-OU
-  Clone este repositório e crie um NOVO repositório público em sua conta GitHub.
-📌 O resultado deve ser um repositório próprio, independente deste.
+## Status dos itens
 
-## 🎯 Objetivo
-Criar solução completa em camadas (DB, EJB, Backend, Frontend), corrigindo bug em EJB e entregando aplicação funcional.
+1. Banco de dados (schema + seed): concluido
+2. Correcao EJB (validacao, saldo, locking): concluido
+3. Backend CRUD + integracao EJB: concluido
+4. Frontend Angular: concluido
+5. Testes EJB e Backend: concluido
+6. Swagger + README: concluido
 
-## 📦 Estrutura
-- db/: scripts schema e seed
-- ejb-module/: serviço EJB com bug a ser corrigido
-- backend-module/: backend Spring Boot
-- frontend/: app Angular
-- docs/: instruções e critérios
-- .github/workflows/: CI
+## Qualidade tecnica entregue
 
-## ✅ Tarefas do candidato
-1. Executar db/schema.sql e db/seed.sql
-2. Corrigir bug no BeneficioEjbService
-3. Implementar backend CRUD + integração com EJB
-4. Desenvolver frontend Angular consumindo backend
-5. Implementar testes
-6. Documentar (Swagger, README)
-7. Submeter via fork + PR
+- Arquitetura em camadas no backend
+- Regra critica de transferencia centralizada no EJB
+- Tratamento global de erros HTTP (400, 404, 409, 500)
+- Testes de servico e controller no backend
+- Testes unitarios do EJB
+- Frontend Angular integrado com CRUD e transferencia
+- Ambiente containerizado para banco, backend e frontend
 
-## 🐞 Bug no EJB
-- Transferência não verifica saldo, não usa locking, pode gerar inconsistência
-- Espera-se correção com validações, rollback, locking/optimistic locking
+## Evidencias de execucao
 
-## 📊 Critérios de avaliação
-- Arquitetura em camadas (20%)
-- Correção EJB (20%)
-- CRUD + Transferência (15%)
-- Qualidade de código (10%)
-- Testes (15%)
-- Documentação (10%)
-- Frontend (10%)
+- Build e testes Java: `mvn -B test`
+- Frontend Angular build: `cd frontend && npm run build`
+- API: `http://localhost:8080`
+- Frontend: `http://localhost:4200`
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/api-docs`
