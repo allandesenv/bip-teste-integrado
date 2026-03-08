@@ -1,0 +1,12 @@
+# Maven
+**/target/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# OS/IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
