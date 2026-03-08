@@ -1,0 +1,65 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: bip-postgres
+    environment:
+      POSTGRES_DB: beneficios_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: app_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./db/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_user -d beneficios_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: bip-backend
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/beneficios_db
+      DB_USER: app_user
+      DB_PASSWORD: app_pass
+      SERVER_PORT: 8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    container_name: bip-frontend
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "4200:80"
+
+  ejb-module-tests:
+    image: maven:3.9.9-eclipse-temurin-17
+    container_name: bip-ejb-tests
+    working_dir: /workspace
+    command: mvn -B -pl ejb-module test
+    volumes:
+      - ./:/workspace
+      - maven_repo:/root/.m2
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles: ["tests"]
+
+volumes:
+  postgres_data:
+  maven_repo:
